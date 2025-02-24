@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">CalculatorClient</string>
+    <string name="number_hint">Enter a number</string>
+    <string name="calculate_btn">Calculate</string>
+
+    <string-array name="operations">
+        <item>Add</item>
+        <item>Subtract</item>
+        <item>Multiply</item>
+        <item>Divide</item>
+    </string-array>
 </resources>
