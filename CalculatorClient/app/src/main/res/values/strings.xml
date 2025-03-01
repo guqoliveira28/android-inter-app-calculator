@@ -9,4 +9,8 @@
         <item>Multiply</item>
         <item>Divide</item>
     </string-array>
+
+    <string name="history">History</string>
+    <string name="equals">=</string>
+    <string name="errorMsg">Error!</string>
 </resources>

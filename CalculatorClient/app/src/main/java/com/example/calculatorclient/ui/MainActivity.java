@@ -1,7 +1,11 @@
 package com.example.calculatorclient.ui;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -10,13 +14,23 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.calculatorclient.R;
-import com.example.calculatorclient.utils.CalculationResultReceiver;
+import com.example.calculatorclient.database.OperationDatabase;
+import com.example.calculatorclient.database.OperationEntity;
+import com.example.calculatorclient.database.OperationRepository;
+import com.example.calculatorclient.receiver.CalculationResultReceiver;
 import com.example.calculatorclient.utils.CalculationUtils;
+import com.example.calculatorclient.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private Spinner operationSpinner;
     private Button calculateButton;
     private TextView resultTextView;
+    private RecyclerView historyRecyclerView;
+
+    private OperationRepository operationRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +56,31 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize views
         number1Input = findViewById(R.id.number1Input);
         number2Input = findViewById(R.id.number2Input);
         operationSpinner = findViewById(R.id.operationSpinner);
         calculateButton = findViewById(R.id.calculateButton);
         resultTextView = findViewById(R.id.resultTextView);
+        historyRecyclerView = findViewById(R.id.historyView);
+
+        historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        historyRecyclerView.setAdapter(new HistoryViewAdapter(new ArrayList<OperationEntity>()));
 
         calculateButton.setOnClickListener(v -> {
+            Log.d("MainActivity", "Calculate button clicked");
+            //calculateButton.setEnabled(false);
             calculate();
         });
 
-        resultReceiver = new CalculationResultReceiver(resultTextView);
+        // setup receiver
+        resultReceiver = new CalculationResultReceiver(resultTextView, calculateButton, historyRecyclerView);
+
+        // setup database
+        operationRepository = new OperationRepository(this);
+        //updateHistory();
+
+        startServerApp();
     }
 
     private void calculate() {
@@ -61,23 +92,57 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        double num1 = Double.parseDouble(num1Str);
-        double num2 = Double.parseDouble(num2Str);
-        String selectedOperation = operationSpinner.getSelectedItem().toString().toLowerCase(); // Get selected operation
+        try {
+            double num1 = Double.parseDouble(num1Str);
+            double num2 = Double.parseDouble(num2Str);
+            String selectedOperation = operationSpinner.getSelectedItem().toString().toLowerCase();
 
-        CalculationUtils.startCalculationService(this, num1, num2, selectedOperation);
+            resultReceiver.setOperation(num1, num2, selectedOperation);
+            CalculationUtils.runCalculationService(this, num1, num2, selectedOperation);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid number format", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startServerApp() {
+        Intent intent = new Intent();
+        intent.setPackage(Constants.SERVER_PACKAGE);
+        intent.setAction(Constants.SERVER_PACKAGE.concat(".action.START"));
+        this.sendBroadcast(intent);
+    }
+
+    public void updateHistory() {
+        HistoryViewAdapter adapter = (HistoryViewAdapter) historyRecyclerView.getAdapter();
+        if (adapter != null) {
+            operationRepository.retrieveOperations(data -> {
+                Log.d("MainActivity", "Updating history");
+                runOnUiThread(() -> {
+                    adapter.setOperations(data);
+                });
+            });
+        }
+    }
+
+    private void registerReceivers() {
+        IntentFilter filter = new IntentFilter(CalculationUtils.ACTION_RESULT);
+        ContextCompat.registerReceiver(this, resultReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
+    }
+
+    private void unregisterReceivers() {
+        unregisterReceiver(resultReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter filter = new IntentFilter(CalculationUtils.ACTION_RESULT); // Use the action string
-        registerReceiver(resultReceiver, filter, RECEIVER_EXPORTED);
+        Log.d("MainActivity", "onResume");
+        updateHistory();
+        registerReceivers();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(resultReceiver);
+        unregisterReceivers();
     }
 }

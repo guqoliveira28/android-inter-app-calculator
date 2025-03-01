@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top">
+
+    <TextView
+        android:id="@+id/textViewNum1"
+        style="@style/HistoryTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOperation"
+        style="@style/HistoryTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewNum1"
+        app:layout_constraintTop_toTopOf="@+id/textViewNum1" />
+
+    <TextView
+        android:id="@+id/textViewNum2"
+        style="@style/HistoryTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewOperation"
+        app:layout_constraintTop_toTopOf="@+id/textViewOperation" />
+
+    <TextView
+        android:id="@+id/textViewEquals"
+        style="@style/HistoryTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/equals"
+        app:layout_constraintStart_toEndOf="@+id/textViewNum2"
+        app:layout_constraintTop_toTopOf="@+id/textViewNum2" />
+
+    <TextView
+        android:id="@+id/textViewResult"
+        style="@style/HistoryTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewEquals"
+        app:layout_constraintTop_toTopOf="@+id/textViewEquals" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,15 +15,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculatorServer"
         tools:targetApi="31">
-        <service
-            android:name=".CalculationService"
-            android:exported="true"
-            tools:ignore="ExportedService">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.example.calculation.action.CALCULATE" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.CalculationService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            android:permission="CALCULATOR_SERVER_PERMISSION">
+            <intent-filter>
+                <action android:name="com.example.calculatorserver.action.CALCULATE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".receiver.StartReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.example.calculatorserver.action.START" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

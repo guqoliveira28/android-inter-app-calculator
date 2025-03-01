@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.CalculatorClient" parent="Base.Theme.CalculatorClient" />
+    
+    <style name="InputTheme" parent="@style/Base.Theme.CalculatorClient" >
+        <item name="android:textSize">@dimen/default_text_size</item>
+    </style>
+
+    <style name="HistoryTheme" parent="@style/Base.Theme.CalculatorClient" >
+        <item name="android:textSize">@dimen/list_text_size</item>
+    </style>
 </resources>
