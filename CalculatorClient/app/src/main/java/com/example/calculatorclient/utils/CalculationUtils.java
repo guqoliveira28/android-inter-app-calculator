@@ -2,7 +2,6 @@ package com.example.calculatorclient.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class CalculationUtils {
     private static final String EXTRA_NUM1 = "NUMBER1";

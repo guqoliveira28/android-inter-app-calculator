@@ -3,8 +3,6 @@ package com.example.calculatorclient.ui;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.calculatorclient.R;
-import com.example.calculatorclient.database.OperationDatabase;
 import com.example.calculatorclient.database.OperationEntity;
 import com.example.calculatorclient.database.OperationRepository;
 import com.example.calculatorclient.receiver.CalculationResultReceiver;
@@ -30,7 +27,6 @@ import com.example.calculatorclient.utils.CalculationUtils;
 import com.example.calculatorclient.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText number1Input;
     private EditText number2Input;
     private Spinner operationSpinner;
-    private Button calculateButton;
-    private TextView resultTextView;
     private RecyclerView historyRecyclerView;
 
     private OperationRepository operationRepository;
@@ -60,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         number1Input = findViewById(R.id.number1Input);
         number2Input = findViewById(R.id.number2Input);
         operationSpinner = findViewById(R.id.operationSpinner);
-        calculateButton = findViewById(R.id.calculateButton);
-        resultTextView = findViewById(R.id.resultTextView);
+        Button calculateButton = findViewById(R.id.calculateButton);
+        TextView resultTextView = findViewById(R.id.resultTextView);
         historyRecyclerView = findViewById(R.id.historyView);
 
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,16 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         calculateButton.setOnClickListener(v -> {
             Log.d("MainActivity", "Calculate button clicked");
-            //calculateButton.setEnabled(false);
             calculate();
         });
 
         // setup receiver
-        resultReceiver = new CalculationResultReceiver(resultTextView, calculateButton, historyRecyclerView);
+        resultReceiver = new CalculationResultReceiver(resultTextView, historyRecyclerView);
 
         // setup database
         operationRepository = new OperationRepository(this);
-        //updateHistory();
 
         startServerApp();
     }

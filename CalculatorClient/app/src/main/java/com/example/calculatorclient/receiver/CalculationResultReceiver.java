@@ -10,43 +10,34 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.example.calculatorclient.R;
-import com.example.calculatorclient.database.OperationDatabase;
 import com.example.calculatorclient.database.OperationEntity;
 import com.example.calculatorclient.database.OperationRepository;
 import com.example.calculatorclient.ui.HistoryViewAdapter;
-import com.example.calculatorclient.ui.MainActivity;
 import com.example.calculatorclient.ui.SimpleAlertDialog;
 import com.example.calculatorclient.utils.CalculationUtils;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Date;
-import java.util.List;
 
 public class CalculationResultReceiver extends BroadcastReceiver {
-    private final String TAG = "CalculationResultReceiver";
 
     private final TextView resultTextView;
-    private final Button button;
     private final RecyclerView historyView;
 
     private double number1;
     private double number2;
     private String operation;
 
-    public CalculationResultReceiver(TextView resultTextView, Button button, RecyclerView recyclerView) {
+    public CalculationResultReceiver(TextView resultTextView, RecyclerView recyclerView) {
         this.resultTextView = resultTextView;
-        this.button = button;
         this.historyView = recyclerView;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive");
+        Log.d("CalculationResultReceiver", "onReceive");
         if (CalculationUtils.ACTION_RESULT.equals(intent.getAction())) {
-            //button.setEnabled(true);
             String EXTRA_RESULT = "RESULT";
             String EXTRA_ERROR = "ERROR";
             String error = intent.getStringExtra(EXTRA_ERROR);
@@ -60,7 +51,7 @@ public class CalculationResultReceiver extends BroadcastReceiver {
             double result = intent.getDoubleExtra(EXTRA_RESULT, 0);
             resultTextView.setText(String.valueOf(result));
 
-            Log.d(TAG, "Storing operation");
+            Log.d("CalculationResultReceiver", "Storing operation");
 
             OperationRepository operationRepository = new OperationRepository(context);
 
