@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         historyRecyclerView = findViewById(R.id.historyView);
 
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        historyRecyclerView.setAdapter(new HistoryViewAdapter(new ArrayList<OperationEntity>()));
+        historyRecyclerView.setAdapter(new HistoryViewAdapter(new ArrayList<>()));
 
         calculateButton.setOnClickListener(v -> {
             Log.d("MainActivity", "Calculate button clicked");
@@ -108,9 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (adapter != null) {
             operationRepository.retrieveOperations(data -> {
                 Log.d("MainActivity", "Updating history");
-                runOnUiThread(() -> {
-                    adapter.setOperations(data);
-                });
+                runOnUiThread(() -> adapter.setOperations(data));
             });
         }
     }

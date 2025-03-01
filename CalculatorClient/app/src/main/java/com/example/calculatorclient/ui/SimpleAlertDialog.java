@@ -13,12 +13,7 @@ public class SimpleAlertDialog {
         builder.setTitle(title);
         builder.setMessage(message);
 
-        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNeutralButton("Ok", (dialog, which) -> dialog.dismiss());
 
         dialog = builder.create();
     }

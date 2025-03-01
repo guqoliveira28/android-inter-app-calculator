@@ -15,7 +15,7 @@ import com.example.calculatorclient.database.OperationEntity;
 import java.util.List;
 
 public class HistoryViewAdapter extends RecyclerView.Adapter<HistoryViewAdapter.ViewHolder> {
-    private List<OperationEntity> operations;
+    private final List<OperationEntity> operations;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewNum1;

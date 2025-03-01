@@ -26,9 +26,7 @@ public class OperationRepository {
     }
 
     private void refreshOperations() {
-        new Thread(() -> {
-            operations = db.operationDao().getAll();
-        }).start();
+        new Thread(() -> operations = db.operationDao().getAll()).start();
     }
 
     public interface OperationsFetchCallback {
