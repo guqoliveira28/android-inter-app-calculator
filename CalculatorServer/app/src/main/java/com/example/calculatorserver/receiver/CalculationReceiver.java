@@ -8,6 +8,8 @@ import android.util.Log;
 import com.example.calculatorserver.operations.OperationFactory;
 import com.example.calculatorserver.operations.OperationInterface;
 
+import java.math.BigDecimal;
+
 public class CalculationReceiver extends BroadcastReceiver {
     private static final String TAG = "CalculationService";
 
@@ -23,7 +25,7 @@ public class CalculationReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             if (ACTION_CALCULATE.equals(action)) {
                 String errorMessage = null;
-                double result = 0;
+                BigDecimal result = new BigDecimal(0);
                 double num1 = intent.getDoubleExtra("NUMBER1", 0);
                 double num2 = intent.getDoubleExtra("NUMBER2", 0);
                 String operation = intent.getStringExtra("OPERATION");
@@ -46,7 +48,7 @@ public class CalculationReceiver extends BroadcastReceiver {
 
                 Intent resultIntent = new Intent(ACTION_RESULT);
                 intent.setPackage(intent.getStringExtra("PACKAGE"));
-                resultIntent.putExtra("RESULT", result);
+                resultIntent.putExtra("RESULT", result.toString());
                 resultIntent.putExtra("ERROR", errorMessage);
                 context.sendBroadcast(resultIntent);
 

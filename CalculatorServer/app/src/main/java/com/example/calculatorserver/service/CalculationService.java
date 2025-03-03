@@ -32,7 +32,7 @@ public class CalculationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand called");
+        Log.d(TAG, "onStartCommand called: Starting foreground service");
 
         NotificationsHelper.createNotificationChannel(this);
 

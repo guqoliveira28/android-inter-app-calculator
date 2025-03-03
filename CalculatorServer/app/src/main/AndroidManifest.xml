@@ -36,13 +36,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receiver.StartReceiver"
-            android:exported="true"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.example.calculatorserver.action.START" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

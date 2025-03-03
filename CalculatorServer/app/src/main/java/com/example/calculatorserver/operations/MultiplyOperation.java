@@ -1,8 +1,11 @@
 package com.example.calculatorserver.operations;
 
-public class MultiplyOperation implements OperationInterface {
+import java.math.BigDecimal;
+
+public class MultiplyOperation extends BaseOperation {
     @Override
-    public double performOperation(double num1, double num2) {
-        return num1 * num2;
+    protected BigDecimal performCalculation(double num1, double num2) {
+        return new BigDecimal(String.valueOf(num1))
+                .multiply(new BigDecimal(String.valueOf(num2)));
     }
 }
