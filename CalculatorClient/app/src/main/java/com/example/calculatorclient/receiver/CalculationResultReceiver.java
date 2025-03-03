@@ -24,13 +24,19 @@ public class CalculationResultReceiver extends BroadcastReceiver {
     private final TextView resultTextView;
     private final RecyclerView historyView;
 
-    private double number1;
-    private double number2;
+    private Double number1;
+    private Double number2;
     private String operation;
 
     public CalculationResultReceiver(TextView resultTextView, RecyclerView recyclerView) {
         this.resultTextView = resultTextView;
         this.historyView = recyclerView;
+    }
+
+    public void setOperation(Double number1, Double number2, String operation) {
+        this.number1 = number1;
+        this.number2 = number2;
+        this.operation = operation;
     }
 
     @Override
@@ -47,8 +53,8 @@ public class CalculationResultReceiver extends BroadcastReceiver {
                 dialog.show();
                 return;
             }
-            double result = intent.getDoubleExtra(EXTRA_RESULT, 0);
-            resultTextView.setText(String.valueOf(result));
+            String result = intent.getStringExtra(EXTRA_RESULT);
+            resultTextView.setText(result);
 
             Log.d("CalculationResultReceiver", "Storing operation");
 
@@ -65,11 +71,5 @@ public class CalculationResultReceiver extends BroadcastReceiver {
                 }
             });
         }
-    }
-
-    public void setOperation(double number1, double number2, String operation) {
-        this.number1 = number1;
-        this.number2 = number2;
-        this.operation = operation;
     }
 }

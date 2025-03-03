@@ -18,11 +18,11 @@ public class OperationEntity implements Serializable {
     @ColumnInfo(name = "operation")
     private String operation;
     @ColumnInfo(name = "result")
-    private double result;
+    private String result;
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
-    public OperationEntity(int id, double number1, double number2, String operation, double result, long timestamp) {
+    public OperationEntity(int id, double number1, double number2, String operation, String result, long timestamp) {
         this.id = id;
         this.number1 = number1;
         this.number2 = number2;
@@ -63,11 +63,11 @@ public class OperationEntity implements Serializable {
         this.operation = operation;
     }
 
-    public double getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(double result) {
+    public void setResult(String result) {
         this.result = result;
     }
 

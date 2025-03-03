@@ -3,65 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/Theme.CalculatorClient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="32dp"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ui.MainActivity">
 
-    <EditText
-        android:id="@+id/number1Input"
-        style="@style/InputTheme"
+    <LinearLayout
+        android:id="@+id/input_layout_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="@string/number_hint"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/number1Input"
+            style="@style/InputTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:scrollHorizontally="true" />
+
+        <Button
+            android:id="@+id/clear1"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/x_btn"
+            android:textColor="@android:color/darker_gray" />
+    </LinearLayout>
 
     <Spinner
         android:id="@+id/operationSpinner"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:entries="@array/operations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number1Input" />
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_1" />
 
-    <EditText
-        android:id="@+id/number2Input"
-        style="@style/InputTheme"
+    <LinearLayout
+        android:id="@+id/input_layout_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/number_hint"
-        android:importantForAutofill="no"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/operationSpinner" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/operationSpinner">
+
+        <EditText
+            android:id="@+id/number2Input"
+            style="@style/InputTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/number_hint"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:scrollHorizontally="true" />
+
+        <Button
+            android:id="@+id/clear2"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/x_btn"
+            android:textColor="@android:color/darker_gray" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/calculateButton"
-        style="@style/InputTheme"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp"
         android:text="@string/calculate_btn"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/number2Input" />
+        app:layout_constraintEnd_toEndOf="@+id/input_layout_2"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_2" />
 
     <TextView
         android:id="@+id/resultTextView"
-        style="@style/InputTheme"
+        style="@style/ResultTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -71,20 +109,34 @@
         app:layout_constraintTop_toBottomOf="@+id/calculateButton" />
 
     <TextView
+        android:id="@+id/historyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="@string/history"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/historyView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
+
+    <TextView
+        android:id="@+id/historyNoteTextView"
+        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/historyNote"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/historyTextView"
+        app:layout_constraintStart_toEndOf="@+id/historyTextView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyView"
-        android:layout_width="wrap_content"
-        android:layout_height="350dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/operations_row_item"
+        app:layout_constraintTop_toBottomOf="@+id/historyTextView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

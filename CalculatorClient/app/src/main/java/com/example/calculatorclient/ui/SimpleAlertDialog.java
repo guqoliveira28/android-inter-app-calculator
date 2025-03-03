@@ -2,7 +2,6 @@ package com.example.calculatorclient.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 public class SimpleAlertDialog {
     private final AlertDialog dialog;

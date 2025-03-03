@@ -56,7 +56,7 @@ public class HistoryViewAdapter extends RecyclerView.Adapter<HistoryViewAdapter.
 
     public void addOperation(OperationEntity operation) {
         operations.add(0, operation);
-        notifyItemChanged(0);
+        notifyItemInserted(0);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -80,7 +80,7 @@ public class HistoryViewAdapter extends RecyclerView.Adapter<HistoryViewAdapter.
         viewHolder.getTextViewNum1().setText(String.valueOf(operations.get(position).getNumber1()));
         viewHolder.getTextViewNum2().setText(String.valueOf(operations.get(position).getNumber2()));
         viewHolder.getTextViewOperation().setText(operations.get(position).getOperation());
-        viewHolder.getTextViewResult().setText(String.valueOf(operations.get(position).getResult()));
+        viewHolder.getTextViewResult().setText(operations.get(position).getResult());
     }
 
     @Override

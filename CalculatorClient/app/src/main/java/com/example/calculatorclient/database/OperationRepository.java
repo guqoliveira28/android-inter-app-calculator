@@ -13,6 +13,7 @@ public class OperationRepository {
 
     public OperationRepository(Context context) {
         db = Room.databaseBuilder(context, OperationDatabase.class, "OperationsDB")
+                .addMigrations(OperationDatabase.MIGRATION_1_2)
                 .build();
         Log.d("OperationRepository", "Database loaded");
         refreshOperations();

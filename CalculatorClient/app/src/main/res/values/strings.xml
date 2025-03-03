@@ -2,6 +2,7 @@
     <string name="app_name">CalculatorClient</string>
     <string name="number_hint">Enter a number</string>
     <string name="calculate_btn">Calculate</string>
+    <string name="x_btn">X</string>
 
     <string-array name="operations">
         <item>Add</item>
@@ -11,6 +12,7 @@
     </string-array>
 
     <string name="history">History</string>
+    <string name="historyNote">Click to recover</string>
     <string name="equals">=</string>
     <string name="errorMsg">Error!</string>
 </resources>

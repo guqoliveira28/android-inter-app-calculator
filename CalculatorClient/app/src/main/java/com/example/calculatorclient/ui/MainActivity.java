@@ -1,9 +1,9 @@
 package com.example.calculatorclient.ui;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -20,11 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.calculatorclient.R;
-import com.example.calculatorclient.database.OperationEntity;
 import com.example.calculatorclient.database.OperationRepository;
 import com.example.calculatorclient.receiver.CalculationResultReceiver;
 import com.example.calculatorclient.utils.CalculationUtils;
-import com.example.calculatorclient.utils.Constants;
+import com.example.calculatorclient.utils.StringArrayUtils;
 
 import java.util.ArrayList;
 
@@ -55,24 +55,73 @@ public class MainActivity extends AppCompatActivity {
         number2Input = findViewById(R.id.number2Input);
         operationSpinner = findViewById(R.id.operationSpinner);
         Button calculateButton = findViewById(R.id.calculateButton);
+        Button clearInput1 = findViewById(R.id.clear1);
+        Button clearInput2 = findViewById(R.id.clear2);
         TextView resultTextView = findViewById(R.id.resultTextView);
         historyRecyclerView = findViewById(R.id.historyView);
 
-        historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        historyRecyclerView.setAdapter(new HistoryViewAdapter(new ArrayList<>()));
+        // Set up History recycler view adapter and layout manager
+        historyRecyclerView.setAdapter(getHistoryViewAdapter());
+        historyRecyclerView.setLayoutManager(new LinearLayoutManager(
+                this, LinearLayoutManager.VERTICAL, false));
 
+        // Set up calculate button click listener
         calculateButton.setOnClickListener(v -> {
             Log.d("MainActivity", "Calculate button clicked");
             calculate();
         });
+
+        // Set up item click listener for historyRecyclerView
+        historyRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, historyRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        number1Input.setText(((TextView) view.findViewById(R.id.textViewNum1)).getText().toString());
+                        number2Input.setText(((TextView) view.findViewById(R.id.textViewNum2)).getText().toString());
+                        operationSpinner.setSelection(
+                                StringArrayUtils.indexOfString(
+                                        getResources().getStringArray(R.array.operations),
+                                        ((TextView) view.findViewById(R.id.textViewOperation)).getText().toString()));
+                        resultTextView.setText(
+                                ((TextView) view.findViewById(R.id.textViewResult)).getText().toString());
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        // Do nothing here
+                    }
+                })
+        );
+
+        clearInput1.setOnClickListener(v -> number1Input.setText(""));
+        clearInput2.setOnClickListener(v -> number2Input.setText(""));
 
         // setup receiver
         resultReceiver = new CalculationResultReceiver(resultTextView, historyRecyclerView);
 
         // setup database
         operationRepository = new OperationRepository(this);
+    }
 
-        startServerApp();
+    @NonNull
+    private HistoryViewAdapter getHistoryViewAdapter() {
+        HistoryViewAdapter historyViewAdapter = new HistoryViewAdapter(new ArrayList<>());
+        historyViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                Log.d("MainActivity", "History adapter changed");
+                historyRecyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                Log.d("MainActivity", "History adapter item range inserted");
+                historyRecyclerView.scrollToPosition(0);
+            }
+        });
+        return historyViewAdapter;
     }
 
     private void calculate() {
@@ -96,19 +145,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startServerApp() {
-        Intent intent = new Intent();
-        intent.setPackage(Constants.SERVER_PACKAGE);
-        intent.setAction(Constants.SERVER_PACKAGE.concat(".action.START"));
-        this.sendBroadcast(intent);
-    }
-
     public void updateHistory() {
         HistoryViewAdapter adapter = (HistoryViewAdapter) historyRecyclerView.getAdapter();
         if (adapter != null) {
             operationRepository.retrieveOperations(data -> {
                 Log.d("MainActivity", "Updating history");
-                runOnUiThread(() -> adapter.setOperations(data));
+                runOnUiThread(() -> {
+                    TextView note = findViewById(R.id.historyNoteTextView);
+                    if (data.isEmpty()) {
+                        note.setVisibility(View.INVISIBLE);
+                    } else {
+                        note.setVisibility(View.VISIBLE);
+                    }
+                    adapter.setOperations(data);
+                });
             });
         }
     }

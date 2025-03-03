@@ -12,7 +12,7 @@ public class OperationEntityTest extends TestCase {
         super.setUp();
         timestamp = new Date().getTime();
         operation = new OperationEntity(
-                0, 10.0, 5.0, "add", 15.0, timestamp);
+                0, 10.0, 5.0, "add", "15", timestamp);
     }
 
     public void testGetId() {
@@ -52,12 +52,12 @@ public class OperationEntityTest extends TestCase {
     }
 
     public void testGetResult() {
-        assertEquals(15.0, operation.getResult(), 0.001);
+        assertEquals("15", operation.getResult());
     }
 
     public void testSetResult() {
-        operation.setResult(20.0);
-        assertEquals(20.0, operation.getResult(), 0.001);
+        operation.setResult("20");
+        assertEquals("20", operation.getResult());
     }
 
     public void testGetTimestamp() {
