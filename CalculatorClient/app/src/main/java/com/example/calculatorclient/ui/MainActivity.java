@@ -20,7 +20,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.calculatorclient.listeners.RecyclerItemClickListener;
 import com.example.calculatorclient.R;
+import com.example.calculatorclient.adapters.HistoryViewAdapter;
 import com.example.calculatorclient.database.OperationRepository;
 import com.example.calculatorclient.receiver.CalculationResultReceiver;
 import com.example.calculatorclient.utils.CalculationUtils;

@@ -1,4 +1,4 @@
-package com.example.calculatorclient.ui;
+package com.example.calculatorclient.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;

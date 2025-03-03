@@ -1,4 +1,4 @@
-package com.example.calculatorclient.ui;
+package com.example.calculatorclient.listeners;
 
 import android.content.Context;
 import android.view.GestureDetector;

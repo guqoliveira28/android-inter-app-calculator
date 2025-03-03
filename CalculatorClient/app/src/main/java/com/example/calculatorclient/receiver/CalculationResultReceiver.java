@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.calculatorclient.R;
 import com.example.calculatorclient.database.OperationEntity;
 import com.example.calculatorclient.database.OperationRepository;
-import com.example.calculatorclient.ui.HistoryViewAdapter;
+import com.example.calculatorclient.adapters.HistoryViewAdapter;
 import com.example.calculatorclient.ui.SimpleAlertDialog;
 import com.example.calculatorclient.utils.CalculationUtils;
 
