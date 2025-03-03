@@ -15,7 +15,6 @@ public class CalculationReceiver extends BroadcastReceiver {
 
     private static final String ACTION_CALCULATE = "com.example.calculatorserver.action.CALCULATE";
     private static final String ACTION_RESULT = "com.example.calculatorserver.action.RESULT";
-    private static final String ACTION_HISTORY= "com.example.calculatorserver.action.HISTORY";
 
     @Override
     public void onReceive(Context context, Intent intent) {
